@@ -1,0 +1,48 @@
+# Root .gitignore for orphanage management project
+
+# Java / Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+
+# Maven wrapper
+/.mvn/
+
+# Node
+/frontend/node_modules/
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDE/workspace
+workspace.xml
