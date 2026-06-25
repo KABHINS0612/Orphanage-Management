@@ -5,6 +5,7 @@ import axios from 'axios';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -25,20 +26,32 @@ const Login = () => {
       const response = await axios.post('http://localhost:8080/api/auth/login', {
         username,
         password,
+        rememberMe,
       });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('role', response.data.role);
-      if (response.data.donorId) {
-        localStorage.setItem('donorId', response.data.donorId);
-      }
+      if (response.data.donorId) localStorage.setItem('donorId', response.data.donorId);
+      if (response.data.staffId) localStorage.setItem('staffId', response.data.staffId);
+      if (response.data.orphanId) localStorage.setItem('orphanId', response.data.orphanId);
+      if (response.data.volunteerId) localStorage.setItem('volunteerId', response.data.volunteerId);
+      if (response.data.adopterId) localStorage.setItem('adopterId', response.data.adopterId);
       
-      if (response.data.role === 'ROLE_DONOR') {
+      const role = response.data.role;
+      if (role === 'ROLE_DONOR') {
         navigate('/donor-dashboard');
+      } else if (role === 'ROLE_VOLUNTEER') {
+        navigate('/volunteer-dashboard');
+      } else if (role === 'ROLE_ADOPTER') {
+        navigate('/adopter-dashboard');
+      } else if (role === 'ROLE_STAFF') {
+        navigate('/staff-dashboard');
+      } else if (role === 'ROLE_ORPHAN') {
+        navigate('/orphan-dashboard');
       } else {
         navigate('/');
       }
     } catch (err) {
-      setError('Invalid username or password');
+      setError(typeof err.response?.data === 'string' ? err.response.data : 'Invalid username or password');
     }
   };
 
@@ -90,6 +103,28 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+                Remember me
+              </label>
+            </div>
+
+            <div className="text-sm">
+              <Link to="/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
+                Forgot your password?
+              </Link>
             </div>
           </div>
 

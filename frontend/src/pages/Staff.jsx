@@ -100,6 +100,7 @@ const Staff = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Emp ID</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Designation</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
@@ -110,6 +111,7 @@ const Staff = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {staffList.map((staff) => (
               <tr key={staff.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{staff.employeeId || 'N/A'}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="font-medium text-gray-900">{staff.firstName} {staff.lastName}</div>
                   <div className="text-sm text-gray-500">{staff.email}</div>
@@ -137,6 +139,11 @@ const Staff = () => {
             <h2 className="text-xl font-bold mb-4">{editingId ? 'Edit Staff Member' : 'Add New Staff Member'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">Employee ID</label>
+                  <input type="text" disabled className="mt-1 block w-full bg-gray-100 border border-gray-300 rounded-md shadow-sm p-2 text-gray-500 font-medium"
+                    value={editingId ? (staffList.find(s => s.id === editingId)?.employeeId || 'N/A') : 'Auto-Generated upon Save'} />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">First Name</label>
                   <input type="text" required className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"

@@ -11,4 +11,5 @@ public class RegisterRequest {
     private String email;
     private String phone;
     private String address;
+    private String accountType; // DONOR, VOLUNTEER, ADOPTER
 }

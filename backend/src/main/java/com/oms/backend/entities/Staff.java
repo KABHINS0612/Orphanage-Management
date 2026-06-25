@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class Staff {
     @Id
     private String id;
+    private String employeeId;
     private String firstName;
     private String lastName;
     private String designation;

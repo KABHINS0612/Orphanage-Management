@@ -9,4 +9,8 @@ public class AuthResponse {
     private String token;
     private String role;
     private String donorId;
+    private String staffId;
+    private String orphanId;
+    private String volunteerId;
+    private String adopterId;
 }

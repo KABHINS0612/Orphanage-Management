@@ -21,6 +21,10 @@ public class DonationService {
         return donationRepository.findAll();
     }
 
+    public List<Donation> getDonationsByDonorId(String donorId) {
+        return donationRepository.findByDonorId(donorId);
+    }
+
     public Donation addDonation(DonationRequest request) {
         Donor donor = donorRepository.findById(request.getDonorId())
                 .orElseThrow(() -> new RuntimeException("Donor not found with id: " + request.getDonorId()));

@@ -22,6 +22,11 @@ public class DonationController {
         return ResponseEntity.ok(donationService.getAllDonations());
     }
 
+    @GetMapping("/donor/{donorId}")
+    public ResponseEntity<List<Donation>> getDonationsByDonorId(@PathVariable String donorId) {
+        return ResponseEntity.ok(donationService.getDonationsByDonorId(donorId));
+    }
+
     @PostMapping
     public ResponseEntity<Donation> addDonation(@RequestBody DonationRequest request) {
         return ResponseEntity.ok(donationService.addDonation(request));

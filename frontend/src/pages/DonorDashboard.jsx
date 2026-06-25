@@ -20,14 +20,11 @@ const DonorDashboard = () => {
       const donorId = localStorage.getItem('donorId');
       if (!token || !donorId) return navigate('/login');
 
-      // Note: Ideally, there would be a backend endpoint to fetch donations BY donor ID.
-      // Since we don't have it explicitly right now, we fetch all and filter, or just fetch all
-      // assuming a simple implementation for now.
-      const response = await axios.get('http://localhost:8080/api/donations', {
+      // Use the newly created backend endpoint to fetch donations BY donor ID.
+      const response = await axios.get(`http://localhost:8080/api/donations/donor/${donorId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const myDonations = response.data.filter(d => d.donorId === donorId);
-      setDonations(myDonations);
+      setDonations(response.data);
     } catch (err) {
       console.error('Error fetching donations:', err);
     }

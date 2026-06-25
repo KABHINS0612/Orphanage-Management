@@ -15,4 +15,6 @@ public class Donation {
     private BigDecimal amount;
     private LocalDate date;
     private String purpose;
+    private String paymentStatus; // e.g., PENDING, COMPLETED, FAILED
+    private String receiptUrl;
 }

@@ -19,4 +19,12 @@ public class User {
     private String role;
     
     private String donorId;
+    private String staffId;
+    private String orphanId;
+    private String volunteerId;
+    private String adopterId;
+    
+    private int failedAttemptCount = 0;
+    private java.time.LocalDateTime accountLockedUntil;
+    private java.time.LocalDateTime lastLoginDate;
 }

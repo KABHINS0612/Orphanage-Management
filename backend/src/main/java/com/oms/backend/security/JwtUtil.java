@@ -53,16 +53,21 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        return generateToken(userDetails, false);
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    public String generateToken(UserDetails userDetails, boolean rememberMe) {
+        Map<String, Object> claims = new HashMap<>();
+        long exp = rememberMe ? expiration * 7 : expiration; // Extend 7x if remember me
+        return createToken(claims, userDetails.getUsername(), exp);
+    }
+
+    private String createToken(Map<String, Object> claims, String subject, long exp) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + exp))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

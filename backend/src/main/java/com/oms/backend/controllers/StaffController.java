@@ -33,6 +33,9 @@ public class StaffController {
 
     @PostMapping
     public Staff createStaff(@RequestBody Staff staff) {
+        if (staff.getEmployeeId() == null || staff.getEmployeeId().isEmpty()) {
+            staff.setEmployeeId("EMP-" + java.util.UUID.randomUUID().toString().substring(0, 5).toUpperCase());
+        }
         Staff savedStaff = staffService.saveStaff(staff);
         
         // Auto-create a User account for the staff member using their email as username
@@ -42,7 +45,7 @@ public class StaffController {
                 user.setUsername(staff.getEmail());
                 user.setPassword(passwordEncoder.encode("staff123")); // default password
                 user.setRole("ROLE_STAFF");
-                // In the future, we could add a staffId field to User, similar to donorId.
+                user.setStaffId(savedStaff.getId());
                 userRepository.save(user);
             }
         }

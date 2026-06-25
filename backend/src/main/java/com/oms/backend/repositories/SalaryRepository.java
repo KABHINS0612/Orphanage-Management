@@ -1,0 +1,12 @@
+package com.oms.backend.repositories;
+
+import com.oms.backend.entities.Salary;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface SalaryRepository extends MongoRepository<Salary, String> {
+    List<Salary> findByStaffId(String staffId);
+}

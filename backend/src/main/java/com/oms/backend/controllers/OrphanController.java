@@ -1,9 +1,12 @@
 package com.oms.backend.controllers;
 
 import com.oms.backend.entities.Orphan;
+import com.oms.backend.entities.User;
+import com.oms.backend.repositories.UserRepository;
 import com.oms.backend.services.OrphanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 public class OrphanController {
 
     private final OrphanService orphanService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<Orphan> getAllOrphans() {
@@ -28,7 +33,24 @@ public class OrphanController {
 
     @PostMapping
     public Orphan createOrphan(@RequestBody Orphan orphan) {
-        return orphanService.saveOrphan(orphan);
+        Orphan savedOrphan = orphanService.saveOrphan(orphan);
+        
+        // Auto-create a User account for the orphan using firstname.lastname or just firstname + id snippet
+        String username = (savedOrphan.getFirstName() + (savedOrphan.getLastName() != null ? savedOrphan.getLastName() : "")).toLowerCase().replaceAll("\\s+", "");
+        
+        // Ensure uniqueness
+        if (userRepository.findByUsername(username).isPresent()) {
+            username = username + savedOrphan.getId().substring(savedOrphan.getId().length() - 4);
+        }
+        
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode("orphan123")); // default password
+        user.setRole("ROLE_ORPHAN");
+        user.setOrphanId(savedOrphan.getId());
+        userRepository.save(user);
+        
+        return savedOrphan;
     }
 
     @PutMapping("/{id}")
