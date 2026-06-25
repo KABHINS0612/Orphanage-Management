@@ -41,7 +41,7 @@ npm run dev
 
 ```bash
 cd backend
-./mvnw spring-boot:run
+mvn spring-boot:run
 ```
 
 Backend Details:
